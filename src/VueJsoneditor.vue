@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import JSONEditor from "jsoneditor/dist/jsoneditor.min.js"
-import 'jsoneditor/dist/jsoneditor.min.css'
+import JSONEditor from "JSONEditor"
+
 export default {
   name: "v-jsoneditor",
   data() {

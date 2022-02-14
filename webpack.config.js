@@ -1,5 +1,5 @@
-var path = require('path')
-var webpack = require('webpack')
+var path = require('path');
+var webpack = require('webpack');
 
 const ASSET_PATH = process.env.ASSET_PATH || './dist/';
 
@@ -11,30 +11,38 @@ module.exports = {
     filename: 'v-jsoneditor.min.js',
     library: 'VJsoneditor',
     libraryTarget: 'umd',
-    umdNamedDefine: true
+    umdNamedDefine: true,
+  },
+  externals: {
+    JSONEditor: 'JSONEditor', // window.JSONEditor
+    vue: 'Vue', // window.vue
+  },
+  resolve: {
+    alias: {
+      vue$: 'vue/dist/vue.esm.js',
+      JSONEditor: 'jsoneditor/dist/jsoneditor.min.js',
+      src: path.resolve(__dirname, './src'),
+    },
+    extensions: ['*', '.js', '.vue', '.json'],
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          'vue-style-loader',
-          'css-loader'
-        ],
+        use: ['vue-style-loader', 'css-loader'],
       },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
-          }
+          loaders: {},
           // other vue-loader options go here
-        }
+        },
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       // {
       //   test: /\.(png|jpg|gif|svg)$/,
@@ -45,46 +53,39 @@ module.exports = {
       // },
       {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url-loader?limit=50000&name=[name].[ext]'
-      }
-    ]
-  },
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js',
-      'src': path.resolve(__dirname, './src')
-    },
-    extensions: ['*', '.js', '.vue', '.json']
+        loader: 'url-loader?limit=50000&name=[name].[ext]',
+      },
+    ],
   },
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
   },
   performance: {
-    hints: false
+    hints: false,
   },
-  devtool: '#eval-source-map'
-}
+  devtool: '#eval-source-map',
+};
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+  module.exports.devtool = '#source-map';
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"',
-        ASSET_PATH: JSON.stringify(ASSET_PATH)
-      } 
+        ASSET_PATH: JSON.stringify(ASSET_PATH),
+      },
     }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       compress: {
-        warnings: false
-      }
+        warnings: false,
+      },
     }),
     new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
-  ])
+      minimize: true,
+    }),
+  ]);
 }
