@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="jsoneditor-container" :class="{'max-box':max,'min-box':!max}" :style="getHeight">
+    <div class="jsoneditor-container" :class="{'max-box':max,'min-box':!max}" :style="getStyle">
         <div ref="jsoneditor" class="jsoneditor-box"></div>
         <button type="button" @click="max = !max" class="max-btn" size="mini" v-if="options.mode == 'code' && plus"></button>
     </div>
@@ -26,7 +26,7 @@ export default {
       }
     },
     value: [Object, Array, Number, String, Boolean],
-    height: {
+    style: {
       type: String
     },
     plus: {
@@ -106,10 +106,10 @@ export default {
     this.destroyView()
   },
   computed: {
-    getHeight() {
-      if (this.height && !this.max) {
+    getStyle() {
+      if (this.style && !this.max) {
         return {
-          height: this.height
+          style: this.style
         }
       }
       return {}

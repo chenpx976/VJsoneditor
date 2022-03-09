@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>v-jsoneditor</title>
+  <link rel="stylesheet" href="https://gw.alipayobjects.com/os/lib/jsoneditor/9.7.2/dist/jsoneditor.min.css">
+  <style>
+    .different_element {
+      background-color: #acee61;
+    }
+
+    .different_element div.jsoneditor-field,
+    .different_element div.jsoneditor-value {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <template>
+      <v-jsoneditor style="width: 40%; display: inline-block;" :options="options" v-model="jsonLeft"></v-jsoneditor>
+      <v-jsoneditor style="width: 40%; display: inline-block;" :options="options" v-model="jsonRight"></v-jsoneditor>
+      <p>{{ jsonLeft }}</p>
+    </template>
+  </div>
+  <script src="https://gw.alipayobjects.com/os/lib/lodash/4.17.21/lodash.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/lib/vue/2.6.10/dist/vue.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/lib/jsoneditor/9.7.2/dist/jsoneditor.min.js"></script>
+  <script src="/dist/v-jsoneditor.min.js"></script>
+  <script>
+    const jsonLeft = { "hello": "vue" };
+    const jsonRight = { "hello": "vue2" };
+    var Main = {
+      name: 'test',
+      data() {
+        return {
+          jsonLeft: jsonLeft,
+          jsonRight: jsonRight,
+          options: {
+            mode: 'tree',
+            onClassName({ path, field, value }) {
+              const leftValue = _.get(jsonRight, path)
+              const rightValue = _.get(jsonLeft, path)
+              console.log(leftValue);
+              console.log(rightValue);
+              return _.isEqual(leftValue, rightValue)
+                ? 'the_same_element'
+                : 'different_element'
+            },
+          }
+        }
+      },
+      methods: {
+        onError() {
+
+        }
+      }
+    };
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#app')
+  </script>
+</body>
+
+</html>

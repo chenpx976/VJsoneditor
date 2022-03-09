@@ -10,7 +10,7 @@
 <body>
   <div id="app">
     <template>
-      <v-jsoneditor v-model="json"></v-jsoneditor>
+      <v-jsoneditor :options="options" v-model="json"></v-jsoneditor>
       <p>{{ json }}</p>
     </template>
   </div>
@@ -23,7 +23,10 @@
       name: 'test',
       data() {
         return {
-          json: { "hello": "vue" }
+          json: { "hello": "vue" },
+          options: {
+            mode: 'code'
+          }
         }
       },
       methods: {
